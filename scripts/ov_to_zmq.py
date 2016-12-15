@@ -21,10 +21,12 @@ class MyOVBox(OVBox):
 
     def process(self):
         for chunkIndex in range(len(self.input[0])):
+
             if(type(self.input[0][chunkIndex]) == OVSignalHeader):
                 self.signalHeader = self.input[0].pop()
                 print("PRINTING SIGNAL HEADER")
                 print(self.signalHeader.dimensionLabels)
+
             if(type(self.input[0][chunkIndex]) == OVSignalBuffer):
                 chunk = self.input[0].pop()
                 chunk.append(int(self.setting['Number of Channels']))

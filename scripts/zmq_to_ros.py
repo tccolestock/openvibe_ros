@@ -22,10 +22,10 @@ while not rospy.is_shutdown():
     recvd = socket.recv()
     msg = msgpack.loads(recvd)
     print(msg)
-    labels = msg['labels']
     signal = msg['signal']
     samples = int(signal.pop())  # 'number of samples per epoch'
     channels = int(signal.pop())  # 'number of channels'
+    labels = msg['labels'][0:channels]
     if (samples > 1):
         for i in range(samples):
             x = []
