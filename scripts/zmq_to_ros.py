@@ -1,5 +1,16 @@
 #!/usr/bin/env python
 
+"""
+This script receives electrode data from OpenVibe that was transmitted through a ZMQ Pub-Sub protocol. The number of
+ electrodes and the samples per epoch are captured and recreated accurately. The recreated data can then be published
+ into a ROS topic using the custom message type EegArray. Good for live streaming EEG signals into ROS.
+
+Thomas Colestock
+BioRobotics Lab, Florida Atlantic University, 2016
+"""
+__author__ = "Thomas Colestock"
+
+
 import rospy
 import zmq
 import msgpack
@@ -26,7 +37,7 @@ while not rospy.is_shutdown():
     samples = int(signal.pop())  # 'number of samples per epoch'
     channels = int(signal.pop())  # 'number of channels'
     labels = msg['labels'][0:channels]
-    if (samples > 1):
+    if samples > 1:
         for i in range(samples):
             x = []
             for j in range(channels):
@@ -44,5 +55,3 @@ while not rospy.is_shutdown():
         eeg.channels = labels
         print(eeg)
         eegPub.publish(eeg)
-    # print("not more than one sample")
-    # print(msg)
